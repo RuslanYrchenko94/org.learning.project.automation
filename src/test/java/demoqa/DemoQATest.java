@@ -10,6 +10,7 @@ import java.io.File;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static io.qameta.allure.Allure.step;
 import static java.lang.String.format;
 
 public class DemoQATest {
@@ -27,19 +28,29 @@ public class DemoQATest {
 
     @Test
     void fillFormTest(){
+        step("Відкриваємо сторінку", () -> {
+            open("/text-box");
+        });
 
-        open("/text-box");
-        $(".main-header").shouldHave(text("Text Box"));
-        $("#userName").setValue(format(userLastName));
-        $("#userEmail").setValue(userEmail);
-        $("#currentAddress").setValue(currentAddress);
-        $("#permanentAddress").scrollTo().setValue(permanentAddress);
-        $("#submit").scrollTo().click();
-        $("#output").scrollTo().shouldBe(visible);
-        $("#name ").shouldHave(text(format("%s%s","Name:",userLastName)));
-        $("#email ").shouldHave(text(format("%s%s","Email:",userEmail)));
-        $("#output #currentAddress").shouldHave(text(format("%s%s","Current Address :", currentAddress)));
-        $("#output #permanentAddress").shouldHave(text(format("%s%s","Permananet Address :",permanentAddress)));
+        step("Перевіряємо назву сторінки", () -> {
+            $(".main-header").shouldHave(text("Text Box"));
+        });
+
+        step("Заповнюємо поля форми данними", () -> {
+            $("#userName").setValue(format(userLastName));
+            $("#userEmail").setValue(userEmail);
+            $("#currentAddress").setValue(currentAddress);
+            $("#permanentAddress").scrollTo().setValue(permanentAddress);
+            $("#submit").scrollTo().click();
+            $("#output").scrollTo().shouldBe(visible);
+        });
+
+        step("Перевіряємо результати заповнення", () -> {
+            $("#name ").shouldHave(text(format("%s%s","Name:",userLastName)));
+            $("#email ").shouldHave(text(format("%s%s","Email:",userEmail)));
+            $("#output #currentAddress").shouldHave(text(format("%s%s","Current Address :", currentAddress)));
+            $("#output #permanentAddress").shouldHave(text(format("%s%s","Permananet Address :",permanentAddress)));
+        });
     }
     @Test
     void automationPracticeFormPositiveTest(){

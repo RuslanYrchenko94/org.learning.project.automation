@@ -1,23 +1,57 @@
 plugins {
     id 'java-library'
+    id 'io.qameta.allure' version '2.11.2'
 }
-
+allure {
+    report{
+        version.set("2.19.0")
+    }
+    adapter{
+        aspectjWeaver.set(true)
+        frameworks{
+            junit5{
+                adapterVersion.set("2.19.0")
+            }
+        }
+    }
+}
 repositories {
     mavenCentral()
 }
 
 dependencies {
     testImplementation (
+            "io.rest-assured:rest-assured:5.3.0",
             "com.codeborne:selenide:6.12.4",
             "org.junit.jupiter:junit-jupiter:5.9.2",
-            'org.slf4j:slf4j-simple:2.0.5')
+            'org.slf4j:slf4j-simple:2.0.5',
+            'io.rest-assured:json-schema-validator:5.3.0',
+            'org.postgresql:postgresql:42.6.0',
+            'io.qameta.allure:allure-junit5:2.22.1',
+            'io.qameta.allure:allure-selenide:2.22.1')
 
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+tasks.withType(JavaCompile) {
+    options.compilerArgs += "--enable-preview"
+}
+
+tasks.withType(Test) {
+    jvmArgs += "--enable-preview"
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += '--enable-preview'
+}
 
 test {
     useJUnitPlatform()
+    systemProperties(System.getProperties())
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
+

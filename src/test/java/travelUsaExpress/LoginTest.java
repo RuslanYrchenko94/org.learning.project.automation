@@ -30,4 +30,5 @@ public class LoginTest {
         $(".LoginSection_errorText__3PU6a").isDisplayed();
         $(".LoginSection_errorText__3PU6a").shouldHave(text("We couldn't sign you in using those credentials."));
     }
+
 }
