@@ -1,4 +1,4 @@
-package demoqa;
+package demoqa.tests;
 
 import com.codeborne.selenide.Configuration;
 import org.checkerframework.checker.units.qual.Current;
@@ -10,6 +10,7 @@ import java.io.File;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.qameta.allure.Allure.step;
 import static java.lang.String.format;
 
@@ -23,7 +24,7 @@ public class DemoQATest {
     @BeforeAll
     static void beforeAll(){
         Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
+        getWebDriver().manage().window().maximize();
     }
 
     @Test

@@ -1,26 +1,27 @@
-package demoqa;
+package demoqa.tests;
 
+import demoqa.BaseTest;
+import demoqa.pages.RegistrationPage;
 import org.junit.jupiter.api.Test;
 
-import static globalConstants.Constants.*;
 
-
-public class DemoQAWithPageObjectTest extends BaseTest {
-
+public class DemoQARegistrationPageDataTest extends BaseTest {
+    RegistrationPage registrationPage = new RegistrationPage();
     @Test
     void automationPracticeFormPositiveTest(){
 
         registrationPage.openPage()
-                .setFirstName(userFirstName)
-                .setLastName(userLastName)
-                .setUserEmail(userEmail)
+                .deleteBanners()
+                .setFirstName()
+                .setLastName()
+                .setUserEmail()
                 .setUserGender("Male")
-                .setUserNumber(userNumber)
+                .setUserNumber()
                 .setDateOfBirth("14", "December", "1994")
                 .setSubject("Computer Science")
                 .setHobbies()
                 .setPicture()
-                .setCurrentAddress(currentAddress)
+                .setCurrentAddress()
                 .setState("NCR")
                 .setCity("Noida")
                 .clickSubmitButton()

@@ -1,8 +1,10 @@
-package pages;
+package demoqa.pages;
 
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
-import pages.components.CalendarComponent;
+import com.github.javafaker.Faker;
+import demoqa.BaseTest;
+import demoqa.pages.components.CalendarComponent;
+import demoqa.tests.DemoQARegistrationPageDataTest;
 
 import java.io.File;
 
@@ -11,10 +13,18 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$x;
-import static globalConstants.Constants.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
-public class RegistrationPage  {
+
+public class RegistrationPage {
     CalendarComponent calendarComponent = new CalendarComponent();
+    Faker faker = new Faker();
+
+    String dataUserFirstName = faker.name().firstName();
+    String dataUserLastName = faker.name().lastName();
+    String dataUserEmail = faker.bothify("????##@gmail.com");;
+    String dataUserNumber = faker.number().digits(10);
+    String dataCurrentAddress = faker.address().buildingNumber();
     private SelenideElement firstNameSelector = $("#firstName"),
             lastNameSelector = $("#lastName"),
             userEmailSelector = $("#userEmail"),
@@ -26,35 +36,41 @@ public class RegistrationPage  {
 
     public RegistrationPage openPage(){
         open("/automation-practice-form");
+        getWebDriver().manage().window().maximize();
         $(".main-header").shouldHave(text("Practice Form"));
         return this;
     }
-    public RegistrationPage setFirstName(String value){
-        firstNameSelector.setValue(value);
+    public RegistrationPage deleteBanners(){
+        executeJavaScript("$('#fixedban').remove()");
+        executeJavaScript("$('footer').remove()");
         return this;
     }
-    public RegistrationPage setLastName(String value){
-        lastNameSelector.setValue(value);
+    public RegistrationPage setFirstName(){
+        firstNameSelector.setValue(dataUserFirstName);
         return this;
     }
-    public RegistrationPage setUserEmail(String value){
-        userEmailSelector.setValue(value);
+    public RegistrationPage setLastName(){
+        lastNameSelector.setValue(dataUserLastName);
+        return this;
+    }
+    public RegistrationPage setUserEmail(){
+        userEmailSelector.setValue(dataUserEmail);
         return this;
     }
     public RegistrationPage setUserGender(String value){
         $("#genterWrapper").$(byText(value)).click();
         return this;
     }
-    public RegistrationPage setUserNumber(String value){
-        userNumberSelector.setValue(value);
+    public RegistrationPage setUserNumber(){
+        userNumberSelector.setValue(dataUserNumber);
         return this;
     }
     public RegistrationPage setSubject(String value){
         subjectsInputSelector.setValue(value).pressEnter();
         return this;
     }
-    public RegistrationPage setCurrentAddress(String value){
-        currentAddressSelector.setValue(value);
+    public RegistrationPage setCurrentAddress(){
+        currentAddressSelector.setValue(dataCurrentAddress);
         return this;
     }
     public RegistrationPage setState(String value){
@@ -81,7 +97,7 @@ public class RegistrationPage  {
         return this;
     }
     public RegistrationPage clickSubmitButton(){
-        $("#submit").click();
+        $("#submit").scrollTo().click();
         return this;
     }
     public RegistrationPage checkVisibilityModalWindow(){
@@ -89,9 +105,9 @@ public class RegistrationPage  {
         return this;
     }
     public RegistrationPage checkResponsiveTableContent(){
-        $(".table-responsive").shouldHave(text(userFirstName),text(userLastName), text(userEmail),
-                text("Male"), text(userNumber), text("14 December,1994"), text("Computer Science"),
-                text("Sports"), text("Reading"), text("Screenshot_1.png"), text(currentAddress), text("NCR Noida"));
+        $(".modal-content").shouldHave(text(dataUserFirstName),text(dataUserLastName), text(dataUserEmail),
+                text("Male"), text(dataUserNumber), text("14 December,1994"), text("Computer Science"),
+                text("Sports"), text("Reading"), text("Screenshot_1.png"), text(dataCurrentAddress), text("NCR Noida"));
         return this;
     }
     public RegistrationPage closeLargeModal(){
